@@ -1,0 +1,25 @@
+sourceSets {
+    template {
+        java {
+            srcDir 'src/template/java'
+        }
+    }
+    main {
+        compileClasspath += sourceSets.template.output
+        runtimeClasspath += sourceSets.template.output
+    }
+}
+
+dependencies {
+    // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
+    // Do NOT use other classes from fabric loader
+    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+
+    implementation "com.voicesofwynn:vow-core:1.0-SNAPSHOT"
+
+    implementation "org.yaml:snakeyaml:2.0"
+}
+
+architectury {
+    common(rootProject.platforms.split(","))
+}

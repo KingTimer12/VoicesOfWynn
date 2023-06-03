@@ -1,0 +1,28 @@
+modLoader="javafml"
+loaderVersion="${forge_loader_requirement}"
+license="All Rights Reserved"
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+displayURL="https://voicesofwynn.com/"
+issueTrackerURL="https://github.com/Team-VoW/VoicesOfWynn/issues"
+logoFile="icon.png"
+authors="kmaxi, nullBlade, KingTimer12, root"
+description='''
+A Wynncraft mod for introducing voices in quests
+'''
+# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
+[[dependencies.voicesofwynn]]
+   modId="forge"
+   mandatory=true
+   versionRange="${forge_requirement}"
+   ordering="NONE"
+   side="BOTH"
+# Here's another dependency
+[[dependencies.voicesofwynn]]
+   modId="minecraft"
+   mandatory=true
+   versionRange="[1.19.4,1.20)"
+   ordering="NONE"
+   side="BOTH"

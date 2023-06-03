@@ -1,0 +1,107 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "7.1.2"
+}
+
+architectury {
+    platformSetupLoomIde()
+    forge()
+}
+
+loom {
+    forge {
+        mixinConfig("voicesofwynn.mixins.json")
+    }
+}
+
+configurations {
+    common
+    include
+    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentForge.extendsFrom common
+    implementation.extendsFrom include
+}
+
+dependencies {
+    forge "net.minecraftforge:forge:${rootProject.forge_version}"
+    // Remove the next line if you don't want to depend on the API
+    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+
+    implementation("com.voicesofwynn:vow-core:1.0-SNAPSHOT")
+    include("com.voicesofwynn:vow-core:1.0-SNAPSHOT")
+
+    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+}
+
+processResources {
+    filesMatching('**/*.toml') {
+        expand 'mod_id': mod_id,
+                'mod_version': mod_version,
+                'mod_name': mod_name,
+                'forge_loader_requirement': forge_loader_requirement,
+                'forge_requirement': forge_requirement,
+                'minecraft_version': minecraft_version
+    }
+    from("${project(':common').projectDir}/src/main/resources")
+}
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes(['Specification-Title'     : mod_name,
+                    'Specification-Vendor'    : "VOW Team",
+                    'Specification-Version'   : "1",
+                    'Implementation-Title'    : mod_name,
+                    'Implementation-Version'  : mod_version,
+                    'Implementation-Vendor'   : "VOW Team",
+                    'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+    from configurations.shadow.collect { it.isDirectory() ? it : zipTree(it) }
+}
+
+shadowJar {
+    exclude "fabric.mod.json"
+    def path = 'com.voicesofwynn.shaded'
+    relocate ('org.yaml.snakeyaml', path + '.yaml')
+    configurations = [project.configurations.shadowCommon, project.configurations.include]
+    classifier = 'dev-shadow'
+}
+
+remapJar {
+    input.set shadowJar.archiveFile
+    dependsOn shadowJar
+    classifier = 'forge'
+}
+
+jar {
+    classifier = 'dev'
+}
+
+sourcesJar {
+    def commonSources = project(":common").sourcesJar
+    dependsOn commonSources
+    from commonSources.archiveFile.map { zipTree(it) }
+}
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
+}
+
+publishing {
+    publications {
+        mavenForge(MavenPublication) {
+            artifactId = rootProject.archives_base_name + "-" + project.name
+            from components.java
+        }
+    }
+
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+    repositories {
+        // Add repositories to publish to here.
+    }
+}

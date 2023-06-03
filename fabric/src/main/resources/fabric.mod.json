@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "voicesofwynn",
+  "version": "${version}",
+  "name": "voicesofwynn",
+  "description": "A Wynncraft mod for introducing voices in quests",
+  "authors": [
+    "kmaxi",
+    "nullBlade",
+    "KingTimer12",
+    "root"
+  ],
+  "contact": {
+    "website": "https://voicesofwynn.com/",
+    "repo": "https://github.com/Team-VoW/VoicesOfWynn.git"
+  },
+  "license": "All-Rights-Reserved",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.voicesofwynn.fabric.VOWFabric"
+    ]
+  },
+  "mixins": [
+    "voicesofwynn.mixins.fabric.json",
+    "voicesofwynn.mixins.json"
+  ],
+  "depends": {
+    "fabric": "*",
+    "fabricloader": ">=0.14.21",
+    "minecraft": ">=1.19.4"
+  }
+}
