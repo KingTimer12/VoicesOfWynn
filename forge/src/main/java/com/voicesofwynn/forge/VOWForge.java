@@ -10,7 +10,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class VOWForge {
 
     public VOWForge() {
-        //It's not ready yet
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         eventBus.addListener(this::setup);
     }

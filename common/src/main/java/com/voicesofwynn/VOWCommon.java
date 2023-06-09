@@ -31,7 +31,7 @@ public class VOWCommon {
 
         new VOWThread(folderMod, modLoader, logger).start();
 
-        logger.locLog("[VOW-"+modLoader.name()+"] Init version 1.0.0 (MC: 1.19.4)");
+        logger.locLog("[VOW-"+modLoader.name()+"] Init version Alpha-0.0.2 (MC: 1.19.4)");
     }
 
     public File getFolderMod() {

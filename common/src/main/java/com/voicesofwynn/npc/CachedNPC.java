@@ -3,7 +3,6 @@ package com.voicesofwynn.npc;
 import com.voicesofwynn.core.wrappers.VOWLocation;
 import com.voicesofwynn.utils.LocationUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.Entity;
 
 public class CachedNPC {
 
